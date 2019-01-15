@@ -1,3 +1,4 @@
+import 'package:devfest/buy_ticket.dart';
 import 'package:devfest/devfest_chat_page.dart';
 import 'package:devfest/devfest_home_page.dart';
 import 'package:devfest/devfest_schedule_page.dart';
@@ -17,6 +18,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Home Page'),
+      routes: <String, WidgetBuilder>{
+        "/homepage": (BuildContext context)=> MyHomePage(),
+        "/buypage": (BuildContext context)=> BuyTicket(),
+      },
     );
   }
 }
@@ -55,24 +60,24 @@ class _DevFestState extends State<MyHomePage> with SingleTickerProviderStateMixi
           color: Colors.white,
           child: TabBar(
             controller: controller,
-            labelColor: Color(0xffed5992),
-            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.indigo,
+            unselectedLabelColor: Colors.indigo,
             tabs: <Widget>[
               Tab(
                 icon: Icon(Icons.home),
-                text:  MyString.home,
+//                text:  MyString.home,
               ),
               Tab(
                 icon: Icon(Icons.schedule),
-                text: MyString.schedule,
+//                text: MyString.schedule,
               ),
               Tab(
                 icon: Icon(Icons.person),
-                text: MyString.speakers,
+//                text: MyString.speakers,
               ),
               Tab(
                 icon: Icon(Icons.chat),
-                text: MyString.chat,
+//                text: MyString.chat,
               ),
             ],
           ),
