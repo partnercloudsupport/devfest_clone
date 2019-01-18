@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devfest/buy_ticket.dart';
 
 import 'package:flutter/material.dart';
@@ -11,96 +12,131 @@ class DevFestHomePage extends StatefulWidget {
 }
 
 class _DevFestHomePageState extends State<DevFestHomePage> {
-
+  var homi;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-//            leading: Icon(Icons.home),
-            centerTitle: true,
-            pinned: false,// что бы появлялся бар
-            title: Text("DevFest"),
-//            floating: true,//что бы при скроле проподал текст
-            expandedHeight: 550,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                    width: 160,
-                    height: 280,
-                    child: Column(
-                      children: <Widget>[
-                        _buildRow("GDG DevFest",24),
-                        _buildRow("Gorky 2019",24),
-                        SizedBox(height: 10,),
-                        _buildRow("Nizhny Novgorod.",18),
-                        _buildRow("October 27, 2018",18),
-                        SizedBox(height: 10,),
-                        _buildRow("Be a hero. Be a GDG!",16),
-                        SizedBox(height: 20,),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: RaisedButton(
-                            child: Container(
-                              width: 95,
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(Icons.shopping_cart,color: Colors.white,),
-                                  SizedBox(width: 4,),
-                                  Text("Buy Ticket",style: TextStyle(color: Colors.white),),
-                                ],
-                              ),
-                            ),
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BuyTicket()));
-                            },
-                            color: Colors.indigo,
-                            elevation: 8,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              background: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage("assets/fon_main.png"),fit: BoxFit.cover),
-                  color: Colors.grey.shade200.withOpacity(0.5)
-                ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
-                  child: Container(
-                  decoration: BoxDecoration(color: Colors.black26.withOpacity(0.25)),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-//                content
-                _buildContent(),
-                _buildTickets(),
-              ],
-            ),
-          )
-        ],
-      ),
+        body: _buildSliver(),
     );
   }
 
-  //        method
 
+  Widget _buildSliver() {
+// todo переписать !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! очень плохо
+    return StreamBuilder(
+      stream: Firestore.instance.collection("/home_info").snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+//        List<DocumentSnapshot> ref = snapshot.data.documents;
+//        ref.map((data) => (data)).toList();
+//        final homeInfo = Firestore.instance.collection("/home_info");
+
+
+        return CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+//            leading: Icon(Icons.home),
+              centerTitle: true,
+              pinned: false,
+              // что бы появлялся бар
+              title: Text("DevFest"),
+//            floating: true,//что бы при скроле проподал текст
+              expandedHeight: 550,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      width: 160,
+                      height: 280,
+                      child: Column(
+                        children: <Widget>[
+//                      main screen content
+                          _buildRow(snapshot.data.documents[0]["title"], 24),
+                          _buildRow(snapshot.data.documents[0]["title_second"], 24),
+                          SizedBox(height: 10,),
+                          _buildRow(snapshot.data.documents[0]["city"], 18),
+                          _buildRow(snapshot.data.documents[0]["date"], 18),
+                          SizedBox(height: 10,),
+                          _buildRow(snapshot.data.documents[0]["description"], 16),
+                          SizedBox(height: 20,),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: RaisedButton(
+                              child: Container(
+                                width: 95,
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.shopping_cart,
+                                      color: Colors.white,),
+                                    SizedBox(width: 4,),
+                                    Text("Buy Ticket",
+                                      style: TextStyle(color: Colors.white),),
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => BuyTicket()));
+                              },
+                              color: Colors.indigo,
+                              elevation: 8,
+                            ),
+                          )
+//
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                /// fon main screen
+                background: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/fon_main.png"),
+                          fit: BoxFit.cover),
+                      color: Colors.grey.shade200.withOpacity(0.5)
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.black26.withOpacity(0.25)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            ///       content
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+//               content about
+                  _buildContent(),
+//               content tickets
+                  _buildTickets(),
+//
+                  _buildToDoContent(),
+                ],
+              ),
+            )
+
+            ///       content
+          ],
+        );
+      }
+    );
+  }
+
+///
   _buildRow(String str,double size){
     return Row(
       children: <Widget>[
         Text(
           str,
+          overflow: TextOverflow.clip,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: size,
@@ -231,10 +267,11 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
                     elevation: 7,
                     shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
                     onPressed: (){
-//  todo subscrib
+//  todo subscribe
                     },
                   ),
                 ),
+
               ],
             ),
           )
@@ -264,6 +301,7 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
           SizedBox(height: 20,),
           Container(
             height: 420,
+            margin: EdgeInsets.only(top: 10,bottom: 10),
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
@@ -298,14 +336,13 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
     return Card(
       elevation: 8,
       child: Container(
-//        margin: EdgeInsets.all(5),
         width: 300,
         decoration: BoxDecoration(
           color: Colors.white,
-//          border: Border.all(
-//            width: 3.0,
-//            color: Colors.indigo
-//          ),
+          border: Border.all(
+            width: 3.0,
+            color: Colors.indigo
+          ),
           borderRadius: BorderRadius.all(
             Radius.circular(5.0)
           ),
@@ -366,7 +403,7 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
   ///  have or not tickets
 
   Widget _checkTicket(int tickets){
-///    by tickets
+///    buy tickets
     if(tickets > 0 ){
       return Column(
         children: <Widget>[
@@ -409,7 +446,44 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
       );
   }
 
+  /// create ticketing logic
+
+  /// end
+
   /// end create tickets
 
+  Widget _buildToDoContent() {
+    return Container(
+      color: Colors.indigo,
+      height: 300,
+      child: Center(child: Text("ToDo ...",style: TextStyle(fontSize: 30,color: Colors.white),),)
+    );
+  }
 
 }
+
+class HomeInfo {
+  final String city;
+  final String description;
+  final String title;
+  final String date;
+  final DocumentReference reference;
+
+  HomeInfo.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['city'] != null),
+        assert(map['description'] != null),
+        assert(map['title'] != null),
+        assert(map['date'] != null),
+
+        city = map['city'],
+        description = map['description'],
+        title = map['title'],
+        date = map['date'];
+
+  HomeInfo.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  @override
+  String toString() => "HomeInfo<$city:$description:$title:$date>";
+}
+
