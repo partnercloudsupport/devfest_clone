@@ -130,7 +130,7 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
         children: <Widget>[
           Container(
             height: 530,
-            color: Colors.grey[400],
+            color: Colors.white,
             padding: EdgeInsets.only(top: 40,bottom: 40,left: 20,right: 20),
             child: Column(
               children: <Widget>[
@@ -241,12 +241,14 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
         ],
       );
   }
+                        //////////////////////////////////////////////
+  ///  create ticket
 
   Widget _buildTickets(){
     return Container(
       padding: EdgeInsets.all(20),
       width: 400,
-      color: Colors.grey[400],
+      color: Colors.white,
       child: Column(
         children: <Widget>[
           Center(
@@ -274,11 +276,10 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
                   true,2,
                   "Cool"),
                 _buildTicketItem("Regular","P1000","Jun 17 - Oct 26",
-                  true,14,),
+                  true,0,),
                 _buildTicketItem("Last Chance","P1500","Jun 17 - Oct 26",
                   false,41,
                   "Last Chance by tikets"),
-
               ],
             ),
           )
@@ -286,96 +287,86 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
       ),
     );
   }
-//  content by tickets
+
+  ///  content item by tickets
+
   Widget _buildTicketItem(String head,String price,String date,
       bool check,
       int tickets,
       [String other]
       ){
-    return Container(
-      margin: EdgeInsets.all(5),
-      width: 300,
-      decoration: BoxDecoration(
-        color: Colors.white70,
-        border: Border.all(
-          width: 3.0,
-          color: Colors.indigo
+    return Card(
+      elevation: 8,
+      child: Container(
+//        margin: EdgeInsets.all(5),
+        width: 300,
+        decoration: BoxDecoration(
+          color: Colors.white,
+//          border: Border.all(
+//            width: 3.0,
+//            color: Colors.indigo
+//          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5.0)
+          ),
         ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(5.0)
-        ),
-      ),
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 20,),
-          Center(
-            child: Text(
-              head,
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.black87
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 20,),
+            Center(
+              child: Text(
+                head,
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black87
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 40,),
-          Center(
-            child: Text(
-              price,
-              style: TextStyle(
-                fontSize: 34,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87
-              ),
-            ),
-          ),
-          SizedBox(height: 20,),
-          Center(
-            child: Text(
-              date,
-              style: TextStyle(
-                  fontSize: 20,
+            SizedBox(height: 40,),
+            Center(
+              child: Text(
+                price,
+                style: TextStyle(
+                  fontSize: 34,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 10,),
+            SizedBox(height: 20,),
+            Center(
+              child: Text(
+                date,
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87
+                ),
+              ),
+            ),
+            SizedBox(height: 10,),
 //        span text under date
-          Text(
-              other ?? "",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w200,
-                  color: Colors.black87
-              )
-          ),
-          SizedBox(height: 40,),
-          _checkTicket(tickets),
-          SizedBox(height: 30,),
-        ],
+            Text(
+                other ?? "",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w200,
+                    color: Colors.black87
+                )
+            ),
+            SizedBox(height: 40,),
+            _checkTicket(tickets),
+            SizedBox(height: 30,),
+          ],
+        ),
       ),
     );
   }
-//  // span text date
-//  Widget span(String spanT){
-//    return Column(
-//      children: <Widget>[
-//        SizedBox(height: 40,),
-//        Text(
-//          spanT,
-//          style: TextStyle(
-//          fontSize: 20,
-//          fontWeight: FontWeight.w200,
-//          color: Colors.black87
-//          )
-//        ),
-//      ],
-//    );
-//  }
-//  have or not tickets
+
+  ///  have or not tickets
+
   Widget _checkTicket(int tickets){
-//    by tickets
-//    span(spanT);
+///    by tickets
     if(tickets > 0 ){
       return Column(
         children: <Widget>[
@@ -389,12 +380,10 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
             ),
           ),
           SizedBox(height: 30,),
-          OutlineButton(
-            borderSide: BorderSide(
-              color: Colors.indigo,
-              width: 3,
-            ),
-            color: Colors.black,
+          RaisedButton(
+            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+            textColor: Colors.white,
+            color: Colors.indigo,
             child: Text("Buy Tiket",style: TextStyle(fontSize: 26),),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => BuyTicket()));
@@ -403,7 +392,7 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
         ],
       );
     }
-//    no have tickets
+  ///    no have tickets
     else
       return Column(
         children: <Widget>[
@@ -419,19 +408,8 @@ class _DevFestHomePageState extends State<DevFestHomePage> {
         ],
       );
   }
-//
+
+  /// end create tickets
 
 
-// dialog
-
-
-// open url
-  _launchURL(String  urlYou) async {
-    final url = urlYou;
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 }

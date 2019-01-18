@@ -1,6 +1,7 @@
 import 'package:devfest/buy_ticket.dart';
 import 'package:devfest/devfest_chat_page.dart';
 import 'package:devfest/devfest_home_page.dart';
+import 'package:devfest/devfest_popup_speaker_page.dart';
 import 'package:devfest/devfest_schedule_page.dart';
 import 'package:devfest/devfest_speakers_page.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         "/homepage": (BuildContext context)=> MyHomePage(),
         "/buypage": (BuildContext context)=> BuyTicket(),
+        "/popupspeakerpage": (BuildContext context)=> PopupSpeaker(),
+        "/speakerpage": (BuildContext context)=> DevFestSpeakerPage(),
       },
     );
   }
