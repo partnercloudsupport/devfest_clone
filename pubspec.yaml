@@ -17,6 +17,17 @@ dependencies:
     sdk: flutter
 
   cloud_firestore:
+# auth email
+  firebase_auth:
+# connect with crud base
+#  cloud_firestore:
+#  google in app
+  google_sign_in:
+#  facebook in
+#  flutter_facebook_login:
+#  twitter in
+#  flutter_twitter_login:
+
 #  open url
   url_launcher: ^4.0.3
   # The following adds the Cupertino Icons font to your application.

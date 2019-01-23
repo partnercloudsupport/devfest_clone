@@ -12,7 +12,7 @@ class DevFestHomePage extends StatefulWidget {
 }
 
 class _DevFestHomePageState extends State<DevFestHomePage> {
-  var homi;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

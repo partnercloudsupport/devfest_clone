@@ -1,9 +1,13 @@
 import 'package:devfest/buy_ticket.dart';
-import 'package:devfest/devfest_chat_page.dart';
+import 'package:devfest/chat/authentication_with_phone.dart';
+import 'package:devfest/chat/devfest_login_page.dart';
+import 'package:devfest/chat/fireBase/home_page_aut.dart';
+//import 'package:devfest/chat/fireBase/devfest_login_page.dart';
+import 'package:devfest/chat/fireBase/sign_up_page.dart';
 import 'package:devfest/devfest_home_page.dart';
-import 'package:devfest/devfest_popup_speaker_page.dart';
 import 'package:devfest/devfest_schedule_page.dart';
-import 'package:devfest/devfest_speakers_page.dart';
+import 'package:devfest/speaker/devfest_popup_speaker_page.dart';
+import 'package:devfest/speaker/devfest_speakers_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:devfest/my_string.dart';
@@ -19,12 +23,29 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Home Page'),
+//      initialRoute: '/login',
+      onGenerateRoute: _getRoute,
       routes: <String, WidgetBuilder>{
         "/homepage": (BuildContext context)=> MyHomePage(),
         "/buypage": (BuildContext context)=> BuyTicket(),
         "/popupspeakerpage": (BuildContext context)=> PopupSpeaker(),
         "/speakerpage": (BuildContext context)=> DevFestSpeakerPage(),
+        '/landingpage': (BuildContext context)=> MyHomePage(),
+        '/home_page_aut': (BuildContext context)=> HomePageAut(),
+        '/signup': (BuildContext context) => SignUpPage(),
+        '/phonepage': (BuildContext context) => AuthenticationWithPhone()
       },
+    );
+  }
+  Route<dynamic> _getRoute(RouteSettings settings) {
+    if (settings.name != '/login') {
+      return null;
+    }
+
+    return MaterialPageRoute<void>(
+      settings: settings,
+      builder: (BuildContext context) => DevFestLoginPage(),
+//      fullscreenDialog: true,
     );
   }
 }
@@ -91,7 +112,8 @@ class _DevFestState extends State<MyHomePage> with SingleTickerProviderStateMixi
           DevFestHomePage(),
           DevFestSchedulePage(),
           DevFestSpeakerPage(),
-          DevFestChatPage()
+//          DevFestChatPage()
+          DevFestLoginPage()
         ],
       ),
     );

@@ -1,4 +1,5 @@
-import 'package:devfest/devfest_popup_speaker_page.dart';
+
+import 'package:devfest/speaker/devfest_popup_speaker_page.dart';
 import 'package:flutter/material.dart';
 import 'package:devfest/my_string.dart';
 
